@@ -269,8 +269,35 @@ function update() {
 
         const sY = getStringY(ball.x);
         if (ball.y + ball.radius > sY && ball.vy > 0) {
+            // 计算琴弦在碰撞点的切线斜率
+            const tangentSlope = (getStringY(ball.x + 10) - getStringY(ball.x - 10)) / 20;
+            // 计算法线向量 (垂直于切线)
+            const normalX = -tangentSlope;
+            const normalY = 1;
+            const normalLength = Math.sqrt(normalX * normalX + normalY * normalY);
+            // 归一化法线向量
+            const normalizedNormalX = normalX / normalLength;
+            const normalizedNormalY = normalY / normalLength;
+
+            // 计算入射速度向量
+            const incomingVelocityX = ball.vx;
+            const incomingVelocityY = ball.vy;
+
+            // 计算入射速度在法线上的投影
+            const dotProduct = incomingVelocityX * normalizedNormalX + incomingVelocityY * normalizedNormalY;
+
+            // 计算反射后的速度向量
+            ball.vx = incomingVelocityX - 2 * dotProduct * normalizedNormalX;
+            ball.vy = incomingVelocityY - 2 * dotProduct * normalizedNormalY;
+
+            // 应用一些阻尼，使反弹更真实
+            const dampingFactor = 1.56;
+            ball.vx *= dampingFactor;
+            ball.vy *= dampingFactor;
+
+            // 确保小球在琴弦上方
             ball.y = sY - ball.radius; 
-            ball.vy = -18; // 手机端降低琴弦反弹力度，适配竖屏
+
             playBassNote(60);
             // 触摸反馈：小球撞击琴弦时震动（手机端）
             if (window.navigator.vibrate) {
