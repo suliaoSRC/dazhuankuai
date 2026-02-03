@@ -200,7 +200,7 @@ function initGame() {
 function getStringY(x) {
     const xPos = x / width * 3.5;
     // 手机端下调琴弦位置，增加发射操作区域
-    return height * 0.88 + Math.sin(xPos + waveTime * 0.25) * 15 + Math.cos(xPos * 0.7 - waveTime * 0.15) * 10;
+    return height * 0.88 + Math.sin(xPos + waveTime * 0.35) * 25 + Math.cos(xPos * 0.7 - waveTime * 0.25) * 18;
 }
 
 // 同时适配鼠标点击和手机触摸
@@ -245,7 +245,7 @@ gameOverScreen.addEventListener('touchstart', (e) => {
 
 function update() {
     if (isGameOver) return requestAnimationFrame(update);
-    waveTime += 0.02;
+    waveTime += 0.03;
 
     for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
@@ -270,7 +270,7 @@ function update() {
         const sY = getStringY(ball.x);
         if (ball.y + ball.radius > sY && ball.vy > 0) {
             ball.y = sY - ball.radius; 
-            ball.vy = -20; // 手机端降低琴弦反弹力度，适配竖屏
+            ball.vy = -18; // 手机端降低琴弦反弹力度，适配竖屏
             playBassNote(60);
             // 触摸反馈：小球撞击琴弦时震动（手机端）
             if (window.navigator.vibrate) {
