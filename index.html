@@ -270,7 +270,7 @@ function update() {
         const sY = getStringY(ball.x);
         if (ball.y + ball.radius > sY && ball.vy > 0) {
             ball.y = sY - ball.radius; 
-            ball.vy = -15; // 手机端降低琴弦反弹力度，适配竖屏
+            ball.vy = -20; // 手机端降低琴弦反弹力度，适配竖屏
             playBassNote(60);
             // 触摸反馈：小球撞击琴弦时震动（手机端）
             if (window.navigator.vibrate) {
